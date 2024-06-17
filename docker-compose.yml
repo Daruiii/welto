@@ -16,8 +16,8 @@ services:
       - "5000:5000"
     volumes:
       - ./welto-backend:/app
-    environment:
-      - MONGO_URI=mongodb://mongodb:27017/welto
+    env_file:
+      - ./welto-backend/.env
     depends_on:
       - mongodb
 
