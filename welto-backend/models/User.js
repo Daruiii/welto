@@ -7,10 +7,13 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
+    establishmentName: { type: String, required: true },
     establishmentType: { type: String, required: false, enum: ['AirBnB', 'Hotel', 'Hostel', 'Motel', 'Resort', 'Villa'] },
-    establishmentType: { type: String, required: true },
-    phone: { type: String, required: true }
-});
+    phone: { type: String, required: true },
+    role: { type: String, enum: ['user', 'admin', 'moderator'], default: 'user' },
+    isVerified: { type: Boolean, default: false },
+    isPaid: { type: Boolean, default: false }
+  });
 
 // Méthode pour vérifier le mot de passe
 userSchema.methods.verifyPassword = function (password) {

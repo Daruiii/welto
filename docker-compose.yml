@@ -16,8 +16,10 @@ services:
       - "5000:5000"
     volumes:
       - ./welto-backend:/app
+      - /app/node_modules
     env_file:
       - ./welto-backend/.env
+    command: nodemon -L server.js
     depends_on:
       - mongodb
 

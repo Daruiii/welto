@@ -4,8 +4,13 @@ const passport = require('passport');
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
 const User = require('./models/User');
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./config/swaggerConfig');
 
 const app = express();
+// Route pour accéder à la documentation Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 const port = process.env.PORT || 5000;
 const mongoUri = process.env.MONGO_URI;
 console.log("MONGO_URI:", process.env.MONGO_URI);
@@ -25,21 +30,22 @@ const opts = {
   secretOrKey: process.env.JWT_SECRET || 'secret_key'
 };
 
-passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
-  User.findById(jwt_payload.id, (err, user) => {
-    if (err) {
-      return done(err, false);
-    }
+passport.use(new JwtStrategy(opts, async (jwt_payload, done) => {
+  try {
+    const user = await User.findById(jwt_payload.id);
     if (user) {
       return done(null, user);
     } else {
       return done(null, false);
     }
-  });
+  } catch (err) {
+    return done(err, false);
+  }
 }));
 
 app.use(passport.initialize());
 app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
 
 app.get('/', (req, res) => {
   res.send(`Welcome to Welto API, Mongo URI: ${mongoUri}`);
