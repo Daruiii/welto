@@ -92,4 +92,31 @@ router.post('/login', [
     }
 });
 
+// Verification route
+router.get('/verify-email', async (req, res) => {
+    const token = req.query.token;
+
+    if (!token) {
+        return res.status(400).json({ message: 'Token is missing' });
+    }
+
+    try {
+        // Verify the token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.userId;
+
+        // Find the user by ID and update emailVerified to true
+        const user = await User.findByIdAndUpdate(userId, { emailVerified: true }, { new: true });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        return res.status(200).json({ message: 'Email verified successfully', user });
+    } catch (error) {
+        console.error('Error verifying email:', error);
+        return res.status(400).json({ message: 'Invalid or expired token' });
+    }
+});
+
 module.exports = router;

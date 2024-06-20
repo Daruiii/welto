@@ -82,6 +82,8 @@
  *           example: "password123"
  */
 
+// email verification schema
+
 // JWT security definition
 /**
  * @swagger
@@ -92,6 +94,21 @@
  *       scheme: bearer
  *       bearerFormat: JWT
  */
+
+// Email verification schema
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     EmailVerification:
+ *       type: object
+ *       properties:
+ *         token:
+ *           type: string
+ *           description: JWT token for email verification
+ *           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ */
+
 // Register route
 /**
  * @swagger
@@ -157,6 +174,56 @@
  *                       location:
  *                         type: string
  *                         example: body
+ */
+
+// Verification route
+/**
+ * @swagger
+ * /auth/verify-email:
+ *   get:
+ *     summary: Verify user's email address
+ *     tags: [Users Auth]
+ *     parameters:
+ *       - in: query
+ *         name: token
+ *         required: true
+ *         schema:
+ *           type: string
+ *           description: JWT token for email verification
+ *           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *     responses:
+ *       200:
+ *         description: Email verified successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Email verified successfully
+ *                 user:
+ *                   $ref: '#/components/schemas/UserWithoutPassword'
+ *       400:
+ *         description: Invalid or expired token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Invalid or expired token
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User not found
  */
 
 // Get user by ID route
