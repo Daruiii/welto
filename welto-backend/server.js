@@ -7,6 +7,8 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./config/swaggerConfig');
+const i18n = require('./i18nConfig');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 // Route pour accéder à la documentation Swagger
@@ -24,6 +26,8 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/welto').the
 });
 
 app.use(express.json());
+app.use(cookieParser());
+app.use(i18n.init);
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -47,8 +51,23 @@ app.use(passport.initialize());
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 
+app.use(( req, res, next) => {
+  let locale = req.query.lang || req.cookies.lang || req.header('Accept-Language') || 'en';
+  if (locale) {
+    locale = locale.split(',')[0].split('-')[0]; // fr-FR => fr en gros
+    if (i18n.getLocales().includes(locale)) {
+      i18n.setLocale(req, locale);
+    } else {
+      i18n.setLocale(req, 'en');
+    }
+  } else {
+    i18n.setLocale(req, 'en');
+  }
+  next();
+});
+
 app.get('/', (req, res) => {
-  res.send(`Welcome to Welto API, Mongo URI: ${mongoUri}`);
+  res.send(res.__('welcome'));
 });
 
 app.listen(port, () => {

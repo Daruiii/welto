@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({
     phone: { type: String, required: true },
     role: { type: String, enum: ['user', 'admin', 'moderator'], default: 'user' },
     isVerified: { type: Boolean, default: false },
-    isPaid: { type: Boolean, default: false }
+    isPaid: { type: Boolean, default: false },
+    emailVerified: { type: Boolean, default: false }
   });
 
 // Méthode pour vérifier le mot de passe

@@ -133,4 +133,49 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), ensureRo
     }
 });
 
+// Récupérer les utilisateurs non vérifiés (admin uniquement)
+router.get('/status/unverified', passport.authenticate('jwt', { session: false }), ensureRole('admin'), async (req, res) => {
+    try {
+        const users = await User.find({ isVerified: false }).select('-password');
+        res.status(200).json(users);
+    } catch (error) {
+        handleError(res, error, 'Error retrieving unverified users');
+    }
+});
+
+// Récupérer les utilisateurs vérifiés (admin uniquement)
+router.get('/status/verified', passport.authenticate('jwt', { session: false }), ensureRole('admin'), async (req, res) => {
+    try {
+        const users = await User.find({ isVerified: true }).select('-password');
+        res.status(200).json(users);
+    } catch (error) {
+        handleError(res, error, 'Error retrieving verified users');
+    }
+});
+
+// Vérifier un utilisateur (admin uniquement)
+router.post('/:id/verify', passport.authenticate('jwt', { session: false }), ensureRole('admin'), async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.params.id, { isVerified: true }, { new: true }).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: 'User verified successfully', user });
+    } catch (error) {
+        handleError(res, error, 'Error verifying user');
+    }
+});
+
+// Dé-vérifier un utilisateur (admin uniquement)
+router.post('/:id/unverify', passport.authenticate('jwt', { session: false }), ensureRole('admin'), async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.params.id, { isVerified: false }, { new: true }).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: 'User unverified successfully', user });
+    } catch (error) {
+        handleError(res, error, 'Error un-verifying user');
+    }
+});
 module.exports = router;
