@@ -9,7 +9,7 @@ const { body, validationResult } = require('express-validator'); // Pour la vali
 const ensureRole = require('../middlewares/roles');
 const sendEmail = require('../services/emailService');
 const generateVerificationLink = require('../utils/generateVerificationLink');
-const i18n = require('../i18nConfig');
+const i18n = require('../config/i18nConfig');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret_key';
 const JWT_EXPIRY = '1h'; // Durée de validité du token JWT
@@ -50,18 +50,11 @@ router.post('/register', [
 
         // Détection de la langue de l'utilisateur (grace au navigateur)
         let locale = req.headers['accept-language'].split(',')[0].split('-')[0];
-        if (locale) {
-            locale = locale.split(',')[0].split('-')[0];
-            if (!i18n.getLocales().includes(locale)) {
-                locale = 'en';
-            }
-        } else {
+        if (!i18n.getLocales().includes(locale)) {
             locale = 'en';
         }
 
-        console.log('locale:', locale);
         const verificationLink = generateVerificationLink(newUser._id);
-        console.log('Verification link:', verificationLink);
         await sendEmail(newUser.email, 'emailTemplate', { verificationLink }, locale, newUser.firstName);
 
         res.status(200).json({ message: 'User registered successfully' });

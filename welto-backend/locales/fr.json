@@ -1,0 +1,18 @@
+{
+    "basics": {
+        "welcome": "Bienvenue chez Welto !",
+        "register_success": "Vous vous êtes inscrit avec succès",
+        "user_not_found": "Utilisateur non trouvé"
+    },
+      
+    "emailTemplate": {
+        "subject": "Vérifiez votre email pour Welto",
+        "text": "Veuillez vérifier votre email en cliquant sur le lien ci-dessous :",
+        "html": {
+            "title": "Bienvenue chez Welto !",
+            "body": "Merci de vous être inscrit. Veuillez vérifier votre email en cliquant sur le lien ci-dessous :",
+            "action": "Vérifier l'email",
+            "footer": "Si vous n'avez pas créé de compte, veuillez ignorer cet email."
+        }
+    }
+}
