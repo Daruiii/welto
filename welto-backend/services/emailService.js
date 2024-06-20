@@ -23,7 +23,7 @@ const sendEmail = async (to, templateName, context, locale, firstName) => {
     try {
         const texts = loadTexts(locale);
         const htmlContent = loadTemplate(templateName, locale, context);
-        const textTemplate = handlebars.compile(`${texts[templateName].text} ${context.verifyLink}`);
+        const textTemplate = handlebars.compile(`${texts[templateName].text} ${context.actionLink}`);
         const textContent = textTemplate(context);
 
         const request = mailjet.post('send', { version: 'v3.1' }).request({

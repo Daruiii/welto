@@ -4,8 +4,7 @@
         "register_success": "Vous vous êtes inscrit avec succès",
         "user_not_found": "Utilisateur non trouvé"
     },
-      
-    "emailTemplate": {
+    "emailVerifyTemplate": {
         "subject": "Vérifiez votre email pour Welto",
         "text": "Veuillez vérifier votre email en cliquant sur le lien ci-dessous :",
         "html": {
@@ -13,6 +12,26 @@
             "body": "Merci de vous être inscrit. Veuillez vérifier votre email en cliquant sur le lien ci-dessous :",
             "action": "Vérifier l'email",
             "footer": "Si vous n'avez pas créé de compte, veuillez ignorer cet email."
+        }
+    },
+    "verificationEmail": {
+        "subject": "Votre compte a été vérifié",
+        "text": "Félicitations, votre compte a été vérifié !",
+        "html": {
+            "title": "Compte Vérifié",
+            "body": "Votre compte a été vérifié. Vous pouvez maintenant choisir un plan et commencer à utiliser Welto.",
+            "action": "Se connecter",
+            "footer": "Si vous n'avez pas demandé cela, veuillez contacter le support."
+        }
+    },
+    "unverificationEmail": {
+        "subject": "Votre compte a été désactivé",
+        "text": "Votre compte a été désactivé. Veuillez contacter le support pour plus d'informations.",
+        "html": {
+            "title": "Compte Désactivé",
+            "body": "Votre compte a été désactivé. Veuillez contacter le support pour plus d'informations.",
+            "action": "Contacter le support",
+            "footer": "Si vous n'avez pas demandé cela, veuillez contacter le support."
         }
     }
 }

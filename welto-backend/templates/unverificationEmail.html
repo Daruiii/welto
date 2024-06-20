@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            -webkit-text-size-adjust: none;
+            -ms-text-size-adjust: none;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            text-align: center;
+            border: 0.5px solid #ccc;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        p {
+            color: #666;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #1a73e8;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .centered {
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align: center; margin-top: 20px; font-size: 24px;">{{title}}</h1>
+    <table role="presentation" class="main" width="100%" cellspacing="0" cellpadding="0" border="0"
+        style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td style="padding: 20px 0; text-align: center;">
+                <table role="presentation" class="container" width="600" cellspacing="0" cellpadding="0" border="0"
+                    style="border-collapse: collapse; max-width: 600px; margin: 0 auto; text-align: left; background-color: #fff; border-radius: 5px;">
+                    <tr>
+                        <td style="padding: 20px;">
+                            <p>{{body}}</p>
+                            <div class="centered">
+                                <a class="button" href="{{mailtoUrl}}" style="margin: 0 auto;">{{action}}</a>
+                            </div>
+                            <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0)); margin: 20px 0;"> 
+                            <p>{{footer}}</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

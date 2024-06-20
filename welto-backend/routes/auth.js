@@ -55,7 +55,7 @@ router.post('/register', [
         }
 
         const verificationLink = generateVerificationLink(newUser._id);
-        await sendEmail(newUser.email, 'emailTemplate', { verificationLink }, locale, newUser.firstName);
+        await sendEmail(newUser.email, 'emailVerifyTemplate', { verificationLink }, locale, newUser.firstName);
 
         res.status(200).json({ message: 'User registered successfully' });
     } catch (error) {

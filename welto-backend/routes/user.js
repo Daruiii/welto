@@ -6,11 +6,23 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const { body, validationResult } = require('express-validator'); // Pour la validation des données
 const ensureRole = require('../middlewares/roles');
+const sendEmail = require('../services/emailService');
+const i18n = require('../config/i18nConfig');
 
 // Middleware de gestion des erreurs
 const handleError = (res, error, message) => {
     console.error(message, error);
     res.status(500).json({ message, error });
+};
+
+const loginUrl = process.env.APP_URL + '/login';
+const mailtoUrl = 'mailto:' + process.env.SUPPORT_EMAIL;
+const detectLocale = (req) => {
+    let locale = req.headers['accept-language'].split(',')[0].split('-')[0];
+    if (!i18n.getLocales().includes(locale)) {
+        locale = 'en';
+    }
+    return locale;
 };
 
 // Route pour changer le mot de passe
@@ -160,6 +172,11 @@ router.post('/:id/verify', passport.authenticate('jwt', { session: false }), ens
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
+
+        const locale = detectLocale(req);
+
+        await sendEmail(user.email, 'verificationEmail', { loginUrl }, locale, user.firstName);
+
         res.status(200).json({ message: 'User verified successfully', user });
     } catch (error) {
         handleError(res, error, 'Error verifying user');
@@ -173,6 +190,11 @@ router.post('/:id/unverify', passport.authenticate('jwt', { session: false }), e
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
+
+        const locale = detectLocale(req);
+
+        await sendEmail(user.email, 'unverificationEmail', { mailtoUrl }, locale, user.firstName);
+
         res.status(200).json({ message: 'User unverified successfully', user });
     } catch (error) {
         handleError(res, error, 'Error un-verifying user');
