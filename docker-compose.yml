@@ -7,6 +7,8 @@ services:
       - "3000:3000"
     volumes:
       - ./welto-frontend:/app
+      - /app/node_modules
+    command: npm run dev
     depends_on:
       - backend
 
